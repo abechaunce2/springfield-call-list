@@ -307,6 +307,17 @@ let STATE={};
 try{STATE=JSON.parse(localStorage.getItem(SKEY))||{};}catch(e){STATE={};}
 // one-time migration of old spfd_ done flags so the 35 check-offs carry over
 (function migrate(){let ch=false;LEADS.forEach(l=>{if(localStorage.getItem('spfd_'+l.dig)==='1'&&!STATE[l.dig]){STATE[l.dig]={status:'called',ts:Date.now(),notes:'',dm:'',time:'',email:''};ch=true;}});if(ch)save();})();
+// ---- seed: calls already made on the old sheet (applied once per version; never overwrites anything you've already set here) ----
+const SEED=[
+{dig:"4132069763",status:"callback",notes:"Left number for the decision maker."},
+{dig:"4135310995",status:"leftmsg"},
+{dig:"4132842686",status:"callback",email:"sschellenger1@benchmarkquilty.com",notes:"They gave an email but it bounced. She gave sschellenger1@benchmarkquilty.com but I spelled it wrong — need the correct email."},
+{dig:"8668927533",status:"noanswer"},
+{dig:"4135677800",status:"leftmsg"},
+{dig:"4135676211",status:"leftmsg"}
+];
+const SEEDVER=1;
+(function applySeed(){let cur=parseInt(localStorage.getItem('seedver_'+LIST_ID)||'0',10);if(cur>=SEEDVER)return;let ch=false;SEED.forEach(s=>{const ex=STATE[s.dig];if(!ex||!ex.status){STATE[s.dig]={status:s.status,ts:(ex&&ex.ts)||Date.now(),notes:s.notes||((ex&&ex.notes)||''),dm:(ex&&ex.dm)||'',time:(ex&&ex.time)||'',email:s.email||((ex&&ex.email)||'')};ch=true;}});try{localStorage.setItem('seedver_'+LIST_ID,String(SEEDVER));if(ch)localStorage.setItem(SKEY,JSON.stringify(STATE));}catch(e){}})();
 function rec(dig){return STATE[dig]||(STATE[dig]={status:'',ts:0,notes:'',dm:'',time:'',email:''});}
 const EMPTY={status:'',ts:0,notes:'',dm:'',time:'',email:''};
 function get(dig){return STATE[dig]||EMPTY;}
