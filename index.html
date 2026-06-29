@@ -351,7 +351,9 @@ const SEED=[
 {dig:"4135324160",status:"leftmsg"}
 ];
 const SEEDVER=2;
-(function applySeed(){let cur=parseInt(localStorage.getItem('seedver_'+LIST_ID)||'0',10);if(cur>=SEEDVER)return;let ch=false;SEED.forEach(s=>{const ex=STATE[s.dig];if(!ex||!ex.status){STATE[s.dig]={status:s.status,ts:(ex&&ex.ts)||Date.now(),notes:s.notes||((ex&&ex.notes)||''),dm:(ex&&ex.dm)||'',time:(ex&&ex.time)||'',email:s.email||((ex&&ex.email)||'')};ch=true;}});try{localStorage.setItem('seedver_'+LIST_ID,String(SEEDVER));if(ch)localStorage.setItem(SKEY,JSON.stringify(STATE));}catch(e){}})();
+const SEEDTS=(function(){const d=new Date();d.setHours(0,0,0,0);return d.getTime()-1;})();
+(function applySeed(){let cur=parseInt(localStorage.getItem('seedver_'+LIST_ID)||'0',10);if(cur>=SEEDVER)return;let ch=false;SEED.forEach(s=>{const ex=STATE[s.dig];if(!ex||!ex.status){STATE[s.dig]={status:s.status,ts:(ex&&ex.ts)||SEEDTS,notes:s.notes||((ex&&ex.notes)||''),dm:(ex&&ex.dm)||'',time:(ex&&ex.time)||'',email:s.email||((ex&&ex.email)||'')};ch=true;}});try{localStorage.setItem('seedver_'+LIST_ID,String(SEEDVER));if(ch)localStorage.setItem(SKEY,JSON.stringify(STATE));}catch(e){}})();
+(function fixSeedToday(){if(localStorage.getItem('seedtsfix_'+LIST_ID)==='1')return;let ch=false;const seedset={};SEED.forEach(s=>seedset[s.dig]=1);LEADS.forEach(l=>{const r=STATE[l.dig];if(r&&r.status&&seedset[l.dig]&&isToday(r.ts)){r.ts=SEEDTS;ch=true;}});try{localStorage.setItem('seedtsfix_'+LIST_ID,'1');if(ch)localStorage.setItem(SKEY,JSON.stringify(STATE));}catch(e){}})();
 function rec(dig){return STATE[dig]||(STATE[dig]={status:'',ts:0,notes:'',dm:'',time:'',email:''});}
 const EMPTY={status:'',ts:0,notes:'',dm:'',time:'',email:''};
 function get(dig){return STATE[dig]||EMPTY;}
