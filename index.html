@@ -81,7 +81,7 @@
 <div class="wrap">
 <header>
   <h1>St. Patrick Call List</h1>
-  <div class="sub">181 verified leads · within ~15 mi of St. Patrick Church, 1900 Allen St, Springfield · copy a number, call in Salesforce, then mark it here</div>
+  <div class="sub"><span id="hdrcount"></span> verified leads · within ~15 mi of St. Patrick Church, 1900 Allen St, Springfield · copy a number, call in Salesforce, then mark it here</div>
   <div class="score" id="score"></div>
   <div class="progress"><i id="bar"></i></div>
   <div class="controls">
@@ -149,6 +149,23 @@ const LEADS=[
 {c:"Attorney",n:"Doherty, Wallace, Pillsbury & Murphy",p:"(413) 733-3111",t:"Springfield"},
 {c:"RealtorAppraiser/Inspector",n:"Sears Real Estate (Lamacchia)",p:"(413) 785-1697",t:"Springfield"},
 {c:"RealtorAppraiser/Inspector",n:"Gallagher Real Estate",p:"(877) 533-3539",t:"Holyoke"},
+{c:"Roofing/Siding/Gutters",n:"Rocco Roofing",p:"(413) 366-3179",t:"Wilbraham"},
+{c:"Roofing/Siding/Gutters",n:"Sexton Roofing & Siding",p:"(413) 534-1234",t:"Holyoke"},
+{c:"Cleaning-All/Environmental",n:"Anderson Cleaning",p:"(413) 306-5053",t:"West Springfield"},
+{c:"Cleaning-All/Environmental",n:"LL Budget Cleaning Services",p:"(413) 266-3110",t:"Agawam"},
+{c:"Plumbing/Sewer",n:"Gingras Plumbing & Heating",p:"(413) 295-2942",t:"Feeding Hills"},
+{c:"Plumbing/Sewer",n:"A.R. Zukowski Plumbing & Heating",p:"(413) 733-6716",t:"West Springfield"},
+{c:"Landscape/SnowPlow/Agriculture",n:"Lawn Tech Lawn Care",p:"(413) 610-0167",t:"Ludlow"},
+{c:"Landscape/SnowPlow/Agriculture",n:"All Season Property Maintenance",p:"(413) 272-9288",t:"Hampden"},
+{c:"Auto-Mechanic/Parts/Towing",n:"Parrotta's Auto Service",p:"(413) 786-0959",t:"Agawam"},
+{c:"Auto-Mechanic/Parts/Towing",n:"Quality Auto LLC",p:"(413) 789-3500",t:"Agawam"},
+{c:"Auto-Mechanic/Parts/Towing",n:"V&F Auto Service",p:"(413) 789-2181",t:"Agawam"},
+{c:"Auto-Mechanic/Parts/Towing",n:"Agawam Tire & Auto Service Center",p:"(413) 786-4494",t:"Feeding Hills"},
+{c:"Dentist",n:"Holyoke Mall Dental",p:"(413) 538-7400",t:"Holyoke"},
+{c:"Dentist",n:"Baystate Dental of Holyoke",p:"(413) 241-3615",t:"Holyoke"},
+{c:"Insurance",n:"Sumner & Toner Insurance Agency",p:"(413) 567-1051",t:"Longmeadow"},
+{c:"Schools - Education",n:"Greenwood Children's Center",p:"(413) 565-4163",t:"Longmeadow"},
+{c:"RealtorAppraiser/Inspector",n:"Ayre Real Estate",p:"(413) 789-0812",t:"Agawam"},
 {c:"Retirement Facility/Senior Apts",n:"The Arbors at Chicopee Assisted Living & Memory Care",p:"(413) 206-9763",t:"Chicopee"},
 {c:"Retirement Facility/Senior Apts",n:"River Mills Assisted Living at Chicopee Falls",p:"(413) 531-0995",t:"Chicopee"},
 {c:"Retirement Facility/Senior Apts",n:"The Atrium at Cardinal Drive",p:"(413) 284-2686",t:"Agawam"},
@@ -332,6 +349,7 @@ const LEADS=[
 {c:"Restaurant/Banquet Facility",n:"Amedeo's",p:"(413) 536-4056",t:"Holyoke"}
 ];
 LEADS.forEach(l=>{const m=TOWNMI[l.t]||[12,2];l.mi=m[0];l.tier=m[1];l.dig=l.p.replace(/\D/g,'');});
+(function(){const hc=document.getElementById('hdrcount');if(hc)hc.textContent=LEADS.length;})();
 
 // ---- status defs ----
 const STATUS={
