@@ -43,6 +43,7 @@
   .meta{font-size:12.5px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .pill{display:inline-block;font-size:11px;font-weight:700;padding:1px 8px;border-radius:99px;margin-left:6px;color:#fff;vertical-align:middle}
   .tier{display:inline-block;font-size:11px;font-weight:600;padding:0 6px;border-radius:99px;margin-left:6px;background:var(--fill);color:var(--muted)}
+  .notepv{font-size:12.5px;color:var(--text);opacity:.72;margin-top:3px;line-height:1.35;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
   .cp{flex:0 0 auto;background:var(--blue);color:#fff;border:none;padding:8px 13px;border-radius:99px;font-size:13px;font-weight:600;cursor:pointer}
   .cp.ok{background:var(--green)}
   .chev{flex:0 0 auto;color:var(--muted);font-size:13px;width:14px;text-align:center}
@@ -101,9 +102,29 @@
 <div class="toast" id="toast">Copied</div>
 <div class="saved" id="savedflag">Saved ✓</div>
 <script>
-const CATS=["Retirement Facility/Senior Apts","Home Health Care","Nursing Home/Hospice","Medical Clinic","Gen Contractor/Architect/Engineer","Remodeling","Roofing/Siding/Gutters","Cleaning-All/Environmental","Heating/AC Cont","Plumbing/Sewer","Electrician/Lighting","Landscape/SnowPlow/Agriculture","Auto-Mechanic/Parts/Towing","Schools - Education","Financial Planner","Bank/Mortgage Company","Insurance","RealtorAppraiser/Inspector","Attorney","Dentist","Funeral Home","Restaurant/Banquet Facility"];
+const CATS=["Church List (St. Patrick's)","Retirement Facility/Senior Apts","Home Health Care","Nursing Home/Hospice","Medical Clinic","Gen Contractor/Architect/Engineer","Remodeling","Roofing/Siding/Gutters","Cleaning-All/Environmental","Heating/AC Cont","Plumbing/Sewer","Electrician/Lighting","Landscape/SnowPlow/Agriculture","Auto-Mechanic/Parts/Towing","Schools - Education","Financial Planner","Bank/Mortgage Company","Insurance","RealtorAppraiser/Inspector","Attorney","Dentist","Funeral Home","Restaurant/Banquet Facility"];
 const TOWNMI={"Springfield":[3,1],"East Longmeadow":[3,1],"Longmeadow":[5,1],"Wilbraham":[5,1],"Ludlow":[6,1],"West Springfield":[6,1],"Hampden":[7,1],"Chicopee":[7,1],"Agawam":[8,1],"Feeding Hills":[9,1],"Holyoke":[11,2],"Westfield":[15,2]};
 const LEADS=[
+{c:"Church List (St. Patrick's)",n:"Byron-Keenan Funeral Home",p:"(413) 736-5413",t:"Springfield"},
+{c:"Church List (St. Patrick's)",n:"Sampson's Chapel of the Acres",p:"(413) 782-5226",t:"Springfield"},
+{c:"Church List (St. Patrick's)",n:"Nathan Bill's Bar & Restaurant (banquet hall)",p:"(413) 737-6135",t:"Springfield"},
+{c:"Church List (St. Patrick's)",n:"La Fiorentina Pastry Shop",p:"(413) 732-3151",t:"Springfield"},
+{c:"Church List (St. Patrick's)",n:"Leone's Restaurant",p:"(413) 783-3398",t:"Springfield"},
+{c:"Church List (St. Patrick's)",n:"Frigo Foods (catering)",p:"(413) 732-5428",t:"Springfield"},
+{c:"Church List (St. Patrick's)",n:"Pan Pizza",p:"(413) 455-1292",t:"Springfield"},
+{c:"Church List (St. Patrick's)",n:"Springfield Liquor Mart",p:"(413) 783-4556",t:"Springfield"},
+{c:"Church List (St. Patrick's)",n:"Papale Eye Center",p:"(413) 782-0030",t:"Springfield"},
+{c:"Church List (St. Patrick's)",n:"Hazel The Salon",p:"(413) 271-1018",t:"East Longmeadow"},
+{c:"Church List (St. Patrick's)",n:"Grenier Financial Advisors (Pat Grenier - parishioner)",p:"(413) 736-6712",t:"Springfield"},
+{c:"Church List (St. Patrick's)",n:"Fletcher Sewer & Drain",p:"(413) 788-7200",t:"Springfield"},
+{c:"Church List (St. Patrick's)",n:"Clean Septics",p:"(413) 583-2138",t:"Ludlow"},
+{c:"Church List (St. Patrick's)",n:"Ed's Tree Service",p:"(413) 566-2100",t:"Hampden"},
+{c:"Church List (St. Patrick's)",n:"Abide (asbestos / abatement)",p:"(413) 525-0644",t:"East Longmeadow"},
+{c:"Church List (St. Patrick's)",n:"Rocky's Ace Hardware",p:"(413) 781-0350",t:"Springfield"},
+{c:"Church List (St. Patrick's)",n:"Spirit Among Us (religious gifts)",p:"(413) 583-4014",t:"Ludlow"},
+{c:"Church List (St. Patrick's)",n:"ATC Audio (mic / sound repair)",p:"(413) 781-2327",t:"West Springfield"},
+{c:"Church List (St. Patrick's)",n:"PIP Marketing, Signs, Print",p:"(413) 525-4044",t:"East Longmeadow"},
+{c:"Church List (St. Patrick's)",n:"Cintas (fire extinguishers / alarms)",p:"(800) 703-4260",t:"West Springfield"},
 {c:"Retirement Facility/Senior Apts",n:"The Arbors at Chicopee Assisted Living & Memory Care",p:"(413) 206-9763",t:"Chicopee"},
 {c:"Retirement Facility/Senior Apts",n:"River Mills Assisted Living at Chicopee Falls",p:"(413) 531-0995",t:"Chicopee"},
 {c:"Retirement Facility/Senior Apts",n:"The Atrium at Cardinal Drive",p:"(413) 284-2686",t:"Agawam"},
@@ -432,6 +453,7 @@ function rowEl(l,withCat){
   const meta=row.querySelector('.meta');
   meta.textContent=l.t+' · ~'+l.mi+' mi';
   const tier=document.createElement('span');tier.className='tier';tier.textContent=l.tier===1?'closest':'edge';meta.appendChild(tier);
+  if(r.notes){const np=document.createElement('div');np.className='notepv';np.textContent=r.notes;row.querySelector('.mid').appendChild(np);}
   if(done){const pl=document.createElement('span');pl.className='pill';pl.textContent=STATUS[r.status].lbl;pl.style.background=STATUS[r.status].c;meta.appendChild(pl);}
   if(r.time){const pl=document.createElement('span');pl.className='pill';pl.textContent='↩ '+shortWhen(r.time);pl.style.background='var(--orange)';meta.appendChild(pl);}
   // quick check circle
