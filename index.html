@@ -366,13 +366,14 @@ LEADS.forEach(l=>{const m=TOWNMI[l.t]||[12,2];l.mi=m[0];l.tier=m[1];l.dig=l.p.re
 const STATUS={
   noanswer:{lbl:"No answer",c:"var(--muted)"},
   leftmsg:{lbl:"Left msg",c:"var(--blue)"},
-  answered:{lbl:"Answered",c:"var(--teal)"},
+  answered:{lbl:"Answered",c:"var(--purple)"},
   callback:{lbl:"Callback",c:"var(--orange)"},
-  notnow:{lbl:"Not now",c:"var(--purple)"},
+  inprogress:{lbl:"In Progress",c:"var(--teal)"},
+  notnow:{lbl:"Not now",c:"var(--red)"},
   won:{lbl:"WON",c:"var(--green)"},
   called:{lbl:"Called",c:"var(--muted)"}
 };
-const ORDER=["noanswer","leftmsg","answered","callback","notnow","won"];
+const ORDER=["noanswer","leftmsg","callback","inprogress","notnow","won"];
 
 // ---- storage (single keyed blob per church/week + visible save) ----
 const LIST_ID="stpatrick-1900allen-springfield";
@@ -536,11 +537,11 @@ function dueBanner(){
 function esc(s){return (s+'').replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
 
 function updateScore(){
-  let done=0,today=0,answered=0,won=0,cbs=0;
-  LEADS.forEach(l=>{const r=STATE[l.dig];if(!r)return;if(r.status)done++;if(isToday(r.ts))today++;if(r.status==='answered')answered++;if(r.status==='won')won++;if(r.time)cbs++;});
+  let done=0,today=0,inprog=0,won=0,cbs=0;
+  LEADS.forEach(l=>{const r=STATE[l.dig];if(!r)return;if(r.status)done++;if(isToday(r.ts))today++;if(r.status==='inprogress')inprog++;if(r.status==='won')won++;if(r.time)cbs++;});
   scoreEl.innerHTML=
-    '<div class="pip"><b>'+today+' / '+GOAL+'</b><span class="lbl">calls today</span></div>'+
-    '<div class="pip"><b>'+answered+'</b><span class="lbl">answered</span></div>'+
+    '<div class="pip"><b>'+today+'</b><span class="lbl">calls today</span></div>'+
+    '<div class="pip"><b style="color:var(--teal)">'+inprog+'</b><span class="lbl">in progress</span></div>'+
     '<div class="pip"><b>'+cbs+'</b><span class="lbl">callbacks</span></div>'+
     '<div class="pip"><b style="color:var(--green)">'+won+'</b><span class="lbl">won</span></div>';
   const pct=Math.round(done/LEADS.length*100);bar.style.width=pct+'%';count.textContent=done+' / '+LEADS.length+' done';
